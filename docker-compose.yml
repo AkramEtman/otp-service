@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  otp-service:
+    container_name: otp-service
+    image: otp-service:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4444:4444
+    environment:
+      - PORT=4444
