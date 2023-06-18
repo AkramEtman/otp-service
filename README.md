@@ -1,9 +1,12 @@
+# OTP Service
+
+## API Docs
+[Docs](api-docs.md)
+
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
+$ docker compose up --build
 ```
 
 ## Test
