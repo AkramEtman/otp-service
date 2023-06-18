@@ -1,18 +1,22 @@
 import { BadRequestError, InternalServerError } from "routing-controllers"
 import { SendOtpBody, VerifyOtpBody } from "./otp.dto"
 import { OtpRepository } from "./otp.repository"
+import { OtpProviderContext } from "./providers/providerContext"
 
 export class OtpService {
   private otpRepository: OtpRepository
+  private otpProvider: OtpProviderContext
+
   constructor() {
     this.otpRepository = new OtpRepository()
+    this.otpProvider = new OtpProviderContext()
   }
 
   async sendOtp (body: SendOtpBody) {
     const phoneNumber = body.phone
     const otp = this.generateOtp()
     this.otpRepository.saveUserOtp(phoneNumber, otp)
-    const isOtpSent = await this.sendOtpMessage(phoneNumber, otp)
+    const isOtpSent = await this.otpProvider.send(phoneNumber, otp)
 
     if (isOtpSent) {
       return { message: 'OTP is sent' }
@@ -35,20 +39,5 @@ export class OtpService {
     const otp = Math.floor(100000 + Math.random() * 900000).toString()
     console.log('OTP', otp) // For Testing Purpose
     return otp
-  }
-  
-  private async sendOtpMessage (phoneNumber: string, otp: string): Promise<boolean> {
-    try {
-      const requestBody = {
-        phoneNumber,
-        message: 'Your OTP is ' + otp
-      }
-      const url = 'www.service-y.com/otp'
-      // await axios.post(url, requestBody) // mock
-      return true
-    } catch (e) {
-      // if request status is not 200, catch will be running
-      return false
-    }
   }
 }

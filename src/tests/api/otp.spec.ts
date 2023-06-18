@@ -14,11 +14,11 @@ describe('OTP Controller', () => {
           phone: '01966998877'
         })
     })
-    it('status be 200', async() => {
-      expect(response.statusCode).toBe(200);
+    it('status be 500', async() => {
+      expect(response.statusCode).toBe(500);
     });
-    it('message be OTP is sent', async() => {
-      expect(response.body.message).toBe("OTP is sent");
+    it('message be OTP Flow is not available now', async() => {
+      expect(response.body.message).toBe("OTP Flow is not available now");
     });
   })
 
